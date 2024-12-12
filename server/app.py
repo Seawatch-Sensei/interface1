@@ -1,9 +1,5 @@
 import os
-import time
 from flask import Flask, request, jsonify
-from transformers import pipeline
-from PIL import Image
-import io
 from flask_cors import CORS
 from utilities import predict
 
@@ -16,9 +12,7 @@ UPLOAD_FOLDER = 'uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# Setup the image classification pipeline (Hugging Face)
-# classifier = pipeline("image-classification", model="Aryaman9999/Freshness-Fruit_Vegies")
-# http://127.0.0.1:4000/process-image
+
 @app.route('/process-image', methods=['POST'])
 def process_image():
     try:
@@ -32,9 +26,6 @@ def process_image():
         file_name = f"upload-{image_file.filename}"
         file_path = os.path.join(UPLOAD_FOLDER, file_name)
         image_file.save(file_path)
-
-        # Open the image using PIL
-        # image = Image.open(image_file)
 
         # Perform image classification
         print("Classifying the image...")
