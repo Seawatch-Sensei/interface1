@@ -1,3 +1,6 @@
 flask
 flask_cors
 gradio_client
+matplotlib
+torch
+torchvision

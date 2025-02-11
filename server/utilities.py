@@ -28,7 +28,7 @@ def preprocess_image(image_path: str):
     transform = transforms.Compose([
         transforms.Resize((256, 256)),  # Default size as per training
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        #transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
     image = Image.open(image_path).convert("RGB")
@@ -154,10 +154,10 @@ def predict_next_frame(image_path: str, model: torch.nn.Module, num_steps: int =
         input_tensor = output_tensor
 
     # Postprocess the final output
-    return torch.tensor(output_frame)
+    return torch.tensor(output_frame) #denormalize_image(torch.tensor(output_frame))
 
 
-def load_and_predict(image_path: str, temperature: float=25, model_path: str = 'models\model.pth'):
+def load_and_predict(image_path: str, temperature: float=25, model_path: str = 'models\model (2).pth'):
     """
     Loads the model, calculates time steps, and predicts the next frame for the given image and temperature.
 
