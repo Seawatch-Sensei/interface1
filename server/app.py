@@ -108,6 +108,9 @@ def hours24():
             "error": "Failed to process the image. Please check server logs for details."
         }), 500
 
+@app.route('/ping', methods=['GET'])
+def pinging():
+    return "pong"
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
