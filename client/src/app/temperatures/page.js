@@ -54,7 +54,7 @@ export default function TemperatureSliderPage() {
       formData.append("temperature", temp);
 
       try {
-        const response = await fetch("http://127.0.0.1:4000/24hours", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/24hours`, {
           method: "POST",
           body: formData,
         });
@@ -75,10 +75,10 @@ export default function TemperatureSliderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-500 to-yellow-500 flex flex-col items-center justify-center p-6">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md text-center">
-        <h1 className="text-2xl font-bold text-gray-800">Heatwave Image Processor 🌞🔥</h1>
-        <p className="text-gray-600 mt-2">Upload an image and watch it survive extreme temperatures! 😂</p>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 to-orange-500 flex flex-col items-center justify-center p-6 text-white text-center">
+      <div className="bg-white text-yellow-700 shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h1 className="text-2xl font-bold">🔥 Temperature Effect</h1>
+        <p className="mt-2">Upload a banana image and see how different temperatures change its shape in 24 hours! 🌡️</p>
         
         <input
           type="file"
@@ -97,7 +97,7 @@ export default function TemperatureSliderPage() {
         <button
           onClick={handleProcessImage}
           disabled={loading}
-          className={`mt-4 w-full py-2 px-4 text-white font-bold rounded-lg transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"}`}
+          className={`mt-4 w-full py-2 px-4 text-white font-bold rounded-lg transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-600 hover:bg-yellow-700"}`}
         >
           {loading ? "Cooking your pixels... 🍳" : "Start Processing"}
         </button>

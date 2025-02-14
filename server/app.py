@@ -17,7 +17,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 
-@app.route('/process-image', methods=['POST'])
+@app.route('/classify-image', methods=['POST'])
 def process_image():
     try:
         # Check if an image was uploaded
@@ -38,10 +38,12 @@ def process_image():
         # Log the results for debugging
         print("Classification results:", results)
 
+        # Delete the image after processing
+        os.remove(file_path)
+
         # Return the classification results as a JSON response
         return jsonify({
             "message": "Image uploaded, saved, and classified successfully",
-            "file_path": file_path,
             "classification": results
         })
 
@@ -90,6 +92,9 @@ def hours24():
 
         # Move the buffer's cursor to the beginning
         buffer.seek(0)
+
+        # Delete the image after processing
+        os.remove(file_path)
 
         # Log the results for debugging
         print("Image processed successfully.")

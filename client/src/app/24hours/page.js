@@ -1,5 +1,6 @@
 'use client';
 import { useState } from "react";
+import Link from 'next/link';
 
 export default function Home() {
   const [image, setImage] = useState(null);
@@ -48,7 +49,7 @@ export default function Home() {
     formData.append("temperature", temperature); // Send temperature as well
 
     try {
-      const response = await fetch("http://127.0.0.1:4000/24hours", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/24hours`, {
         method: "POST",
         body: formData,
       });
@@ -69,11 +70,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 text-center mb-4">
-          Upload and Process an Image
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white text-center p-6 relative">
+      <div className="bg-white text-yellow-700 shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h1 className="text-2xl font-bold text-center mb-4">🍌 Future Banana 🍌</h1>
+        <p className="text-lg mb-8">Upload a banana image and see its future in 24 hours! 🕰️</p>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
@@ -126,7 +126,7 @@ export default function Home() {
             className={`w-full py-2 px-4 text-white font-bold rounded-lg transition ${
               loading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
+                : "bg-yellow-600 hover:bg-yellow-700 ring-2 ring-yellow-500"
             }`}
           >
             {loading ? "Processing..." : "Submit"}
@@ -144,7 +144,7 @@ export default function Home() {
             <div className="flex gap-4">
               <button
                 onClick={handleReplaceWithProcessed}
-                className="w-full py-2 px-4 text-white font-bold bg-green-600 hover:bg-green-700 rounded-lg transition"
+                className="w-full py-2 px-4 text-white font-bold bg-green-600 hover:bg-green-700 rounded-lg transition ring-2 ring-green-500"
               >
                 Use Processed Image
               </button>
@@ -155,7 +155,7 @@ export default function Home() {
                   setOutputImage(null);
                   setProcessCount(0);
                 }}
-                className="w-full py-2 px-4 text-white font-bold bg-red-600 hover:bg-red-700 rounded-lg transition"
+                className="w-full py-2 px-4 text-white font-bold bg-red-600 hover:bg-red-700 rounded-lg transition ring-2 ring-red-500"
               >
                 Choose New Image
               </button>
@@ -171,6 +171,9 @@ export default function Home() {
           </div>
         )}
       </div>
+      <Link href="/" className="absolute top-4 right-4 text-sm opacity-80 underline transition-transform transform hover:scale-110 hover:text-yellow-300 bg-black p-2 rounded-lg">
+        Back to Home
+      </Link>
     </div>
   );
 }

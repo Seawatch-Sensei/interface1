@@ -28,7 +28,7 @@ export default function Home() {
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://127.0.0.1:4000/process-image", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classify-image`, {
         method: "POST",
         body: formData,
       });
