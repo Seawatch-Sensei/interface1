@@ -1,6 +1,7 @@
 'use client';
 import { useState } from "react";
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   const [image, setImage] = useState(null);
@@ -113,10 +114,12 @@ export default function Home() {
           {preview && (
             <div className="mb-4">
               <h2 className="font-bold text-gray-700 mb-2">Original Image:</h2>
-              <img
+              <Image
                 src={preview}
                 alt="Preview"
                 className="rounded-lg border border-gray-300 shadow-md w-full"
+                width={500}
+                height={500}
               />
             </div>
           )}
@@ -136,10 +139,12 @@ export default function Home() {
         {outputImage && (
           <div className="mt-6">
             <h2 className="font-bold text-gray-700 mb-2">Processed Image:</h2>
-            <img
+            <Image
               src={outputImage}
               alt="Processed"
               className="rounded-lg border border-gray-300 shadow-md w-full mb-4"
+              width={500}
+              height={500}
             />
             <div className="flex gap-4">
               <button

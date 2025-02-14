@@ -4,3 +4,4 @@ gradio_client
 matplotlib
 torch
 torchvision
+gunicorn

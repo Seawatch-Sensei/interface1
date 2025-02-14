@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react";
+import Image from 'next/image';
 
 export default function Home() {
   const [image, setImage] = useState(null);
@@ -71,10 +72,12 @@ export default function Home() {
           </div>
           {preview && (
             <div className="mb-4">
-              <img
+              <Image
                 src={preview}
                 alt="Preview"
                 className="rounded-lg border border-gray-300 shadow-md"
+                width={500}
+                height={500}
               />
             </div>
           )}
@@ -100,4 +103,3 @@ export default function Home() {
     </div>
   );
 }
-

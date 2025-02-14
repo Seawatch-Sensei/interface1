@@ -26,10 +26,14 @@ export default function RootLayout({ children }) {
   return (
     
     <html lang="en">
-      <SessionProvider session={children.session}>
-        <Template children={children} className={`${geistSans.variable} ${geistMono.variable} antialiased`}/>
-      
-      </SessionProvider>
+      <body className="antialiased">
+        <SessionProvider session={children.session}>
+          <Template  className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            {children}
+          </Template>
+        
+        </SessionProvider>
+      </body>
     </html>
   );
 }
