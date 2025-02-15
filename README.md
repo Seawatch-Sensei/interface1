@@ -1,4 +1,6 @@
-# Food Project
+# Banana Predictor
+
+![1739641390777](image/README/1739641390777.png)
 
 A full-stack web application built entirely with Next.js, utilizing Next.js API routes for backend functionality.
 
@@ -35,7 +37,7 @@ Ensure you have the following installed:
    ```bash
    npm run dev
    ```
-   
+
    The application should now be running at `http://localhost:3000`.
 
 ## Notes
