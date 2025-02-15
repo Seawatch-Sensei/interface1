@@ -1,10 +1,9 @@
 import os
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from utilities import predict, load_and_predict
+from utilities import predict, lstm_api
 import numpy as np
 from io import BytesIO
-import matplotlib.pyplot as plt
 from PIL import Image
 
 # Create a Flask app
@@ -77,7 +76,7 @@ def hours24():
 
         # Perform image processing to get a NumPy array (RGB)
         print("Processing the image...")
-        rgb_image = load_and_predict(file_path, temperature).numpy()  # Process the image with temperature adjustment
+        rgb_image = np.array(lstm_api(file_path, temperature))  # Process the image with temperature adjustment
         normalized_image = (rgb_image) / (max(np.max(rgb_image), 1))  # Normalize the image
         
         # Resize the normalized image back to original dimensions
@@ -94,7 +93,7 @@ def hours24():
         buffer.seek(0)
 
         # Delete the image after processing
-        os.remove(file_path)
+        # os.remove(file_path)
 
         # Log the results for debugging
         print("Image processed successfully.")
