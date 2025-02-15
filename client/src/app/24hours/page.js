@@ -50,7 +50,7 @@ export default function Home() {
     formData.append("temperature", temperature); // Send temperature as well
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/24hours`, {
+      const response = await fetch(`api/24hours`, {
         method: "POST",
         body: formData,
       });
