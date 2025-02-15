@@ -3,9 +3,9 @@ import { lstmApi } from '../utilities.js';
 import fs from 'fs';
 import { promisify } from 'util';
 import fetch from 'node-fetch'; // To fetch the image from the URL
-import sharp from 'sharp'; // For handling webp and other formats
+import sharp from 'sharp'; // For handling image transformations and format conversion
 
-// Directly set upload destination to tmp folder
+// Directly set upload destination to tmp folder (Vercel's serverless environment)
 const upload = multer({ dest: '/tmp/' });  // Use /tmp for serverless environments
 const unlinkAsync = promisify(fs.unlink);
 
@@ -57,9 +57,13 @@ export async function POST(request) {
                 const response = await fetch(imageUrl);
                 const buffer = await response.arrayBuffer();  // Use arrayBuffer instead of buffer
 
-                // Use sharp to convert webp to png and perform any other processing
+                // Use sharp to convert the image and resize it to original width and height
                 const outputBuffer = await sharp(Buffer.from(buffer))
-                    .toFormat('png')  // Convert the webp image to png
+                    .resize({
+                        width: (await sharp(Buffer.from(buffer)).metadata()).width,  // Get original width
+                        height: (await sharp(Buffer.from(buffer)).metadata()).height  // Get original height
+                    })
+                    .toFormat('png')  // Convert the image to PNG format
                     .toBuffer();  // Return the image as a buffer
 
                 await unlinkAsync(filePath); // Cleanup uploaded file
