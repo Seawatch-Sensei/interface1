@@ -5,7 +5,7 @@ async function predict(path) {
     const result = await client.predict("/predict",{
         image: handle_file(path),
     });
-    return result;
+    return result.data[0];
 }
 
 async function lstmApi(path, temperature) {

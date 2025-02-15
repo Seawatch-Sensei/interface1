@@ -29,12 +29,13 @@ export default function Home() {
     formData.append("image", image);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classify-image`, {
+      const response = await fetch(`api/classify-image`, {
         method: "POST",
         body: formData,
       });
 
       if (response.ok) {
+        
         const data = (await response.json()).classification;
         console.log(data)
         setOutput(data);
