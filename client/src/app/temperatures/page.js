@@ -54,7 +54,7 @@ export default function TemperatureSliderPage() {
       formData.append("temperature", temp);
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/24hours`, {
+        const response = await fetch(`api/24hours`, {
           method: "POST",
           body: formData,
         });
