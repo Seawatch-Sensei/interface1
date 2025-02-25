@@ -1,8 +1,12 @@
-'use client'
-import { useState } from "react";
+'use client';
+import { useState, useEffect } from "react";
 import Image from 'next/image';
 
 export default function Home() {
+    useEffect(() => {
+        document.title = 'BananAI - Rotten Check';
+    }, []);
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [output, setOutput] = useState("");

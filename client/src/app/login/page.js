@@ -1,6 +1,12 @@
+'use client';
+import { useEffect } from 'react';
 import AuthButton from "@/components/AuthButton";
 
 export default function Home() {
+    useEffect(() => {
+        document.title = 'BananAI - Login';
+    }, []);
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-400 to-orange-500">
             <div className="bg-white text-yellow-700 rounded-3xl shadow-2xl p-10 max-w-md text-center">

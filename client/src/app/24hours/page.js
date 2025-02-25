@@ -1,10 +1,15 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button, CircularProgress, TextField, Card } from "@mui/material";
+import DonateButton from '@/components/DonateButton';
 
 export default function Home() {
+    useEffect(() => {
+        document.title = 'BananAI - 24 Hours Prediction';
+    }, []);
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [outputImage, setOutputImage] = useState(null);
@@ -104,6 +109,7 @@ export default function Home() {
                 Choose New Image
               </Button>
             </div>
+            {image && <DonateButton image={image} />}
           </div>
         )}
 
