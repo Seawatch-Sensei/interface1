@@ -1,6 +1,9 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function FoodItemCard({ 
     item, 
@@ -19,61 +22,81 @@ export default function FoodItemCard({
     };
 
     return (
-        <div className="bg-white rounded-lg p-4 shadow-lg">
-            <div 
-                onClick={handleClick}
-                className={isClickable ? "cursor-pointer" : ""}
-            >
-                <Image
-                    src={item.imageUrl}
-                    alt={item.title}
-                    width={300}
-                    height={200}
-                    className="w-full h-48 object-cover rounded-lg mb-4"
-                    unoptimized
-                />
-                <h2 className="text-xl font-bold mb-2 text-black">{item.title}</h2>
-                <p className="mb-2 text-black">{item.description}</p>
-                <p className="text-sm text-gray-600">Location: {item.location}</p>
-                {item.postedByName && (
-                    <p className="text-sm text-gray-600">Posted by: {item.postedByName}</p>
-                )}
-            </div>
-
-            {showActions && !item.isDonated && (
-                <div className="flex gap-2 mt-4">
-                    <button
-                        onClick={() => router.push(`/food-share/edit/${item._id}`)}
-                        className="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                    >
-                        Edit
-                    </button>
-                    <button
-                        onClick={() => onMarkDonated(item._id)}
-                        className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                    >
-                        Mark as Donated
-                    </button>
+        <motion.div
+            whileHover={isClickable ? { scale: 1.02 } : {}}
+            transition={{ duration: 0.2 }}
+        >
+            <Card className="overflow-hidden">
+                <div 
+                    onClick={handleClick}
+                    className={isClickable ? "cursor-pointer" : ""}
+                >
+                    <div className="relative h-48 w-full">
+                        <Image
+                            src={item.imageUrl}
+                            alt={item.title}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                        />
+                    </div>
+                    <CardHeader>
+                        <CardTitle>{item.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="mb-2">{item.description}</p>
+                        <p className="text-sm text-muted-foreground">Location: {item.location}</p>
+                        {item.postedByName && (
+                            <p className="text-sm text-muted-foreground">Posted by: {item.postedByName}</p>
+                        )}
+                    </CardContent>
                 </div>
-            )}
 
-            {showActions && (
-                <button
-                    onClick={() => onDelete(item._id)}
-                    className="flex-1 w-full mt-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-                >
-                    Delete
-                </button>
-            )}
+                {(showActions || showContact) && (
+                    <CardFooter className="flex flex-col gap-2">
+                        {showActions && !item.isDonated && (
+                            <div className="flex gap-2 w-full">
+                                <Button
+                                    onClick={() => router.push(`/food-share/edit/${item._id}`)}
+                                    variant="outline"
+                                    className="flex-1"
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    onClick={() => onMarkDonated(item._id)}
+                                    variant="secondary"
+                                    className="flex-1"
+                                >
+                                    Mark as Donated
+                                </Button>
+                            </div>
+                        )}
 
-            {showContact && !item.isDonated && (
-                <a
-                    href={`mailto:${item.postedBy}`}
-                    className="mt-2 block text-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                >
-                    Contact
-                </a>
-            )}
-        </div>
+                        {showActions && (
+                            <Button
+                                onClick={() => onDelete(item._id)}
+                                variant="destructive"
+                                className="w-full"
+                            >
+                                Delete
+                            </Button>
+                        )}
+
+                        {showContact && !item.isDonated && (
+                            <Button
+                                asChild
+                                variant="default"
+                                className="w-full"
+                            >
+                                <a href={`mailto:${item.postedBy}`}>
+                                    Contact
+                                </a>
+                            </Button>
+                        )}
+                    </CardFooter>
+                )}
+            </Card>
+        </motion.div>
     );
 }

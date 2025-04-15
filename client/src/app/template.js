@@ -1,13 +1,15 @@
 'use client';
-import SignOut from '@/components/SignOut';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Home, LogOut } from 'lucide-react';
+import SignOut from '@/components/SignOut';
 
 export default function Template({ children }) {
     const { data: session, status } = useSession();
-    
 
     useEffect(() => {
         if (typeof window !== 'undefined' && status === 'unauthenticated' && window.location.pathname !== '/login') {
@@ -18,11 +20,30 @@ export default function Template({ children }) {
     return (
         <>
             {typeof window !== 'undefined' && window.location.pathname !== '/login' && (
-                <div className="absolute top-4 left-4 text-sm underline transition-transform transform hover:scale-110 p-2 rounded-lg">
-                    <SignOut />
-                </div>
+                <motion.header 
+                    className="bg-white/80 backdrop-blur-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50"
+                    initial={{ y: -100 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+                        <Link href="/" className="font-bold text-xl text-yellow-600">BananAI</Link>
+                        <div className="flex gap-2">
+                            <Button variant="ghost" size="sm" asChild>
+                                <Link href="/">
+                                    <Home className="mr-1 h-4 w-4" />
+                                    Dashboard
+                                </Link>
+                            </Button>
+                            
+                                <SignOut />
+                        </div>
+                    </div>
+                </motion.header>
             )}
-            {children}
+            <div className={window.location.pathname !== '/login' ? 'pt-8' : ''}>
+                {children}
+            </div>
         </>
     );
 }

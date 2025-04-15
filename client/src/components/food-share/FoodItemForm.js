@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { uploadImage } from '@/utils/imageUpload';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { Button } from "@/components/ui/button";
 
 export default function FoodItemForm({ initialData, onSubmit, buttonText = 'Submit' }) {
     const [formData, setFormData] = useState({
@@ -49,48 +51,59 @@ export default function FoodItemForm({ initialData, onSubmit, buttonText = 'Subm
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 text-black">
+        <motion.form 
+            onSubmit={handleSubmit} 
+            className="space-y-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+        >
             <div>
-                <label className="block mb-1">Title</label>
+                <label className="block mb-1 font-medium">Title</label>
                 <input
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     required
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
             </div>
             <div>
-                <label className="block mb-1">Description</label>
+                <label className="block mb-1 font-medium">Description</label>
                 <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     required
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                     rows="4"
                 />
             </div>
             <div>
-                <label className="block mb-1">Location</label>
+                <label className="block mb-1 font-medium">Location</label>
                 <input
                     type="text"
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                     required
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
             </div>
             <div>
-                <label className="block mb-1">Image</label>
+                <label className="block mb-1 font-medium">Image</label>
                 <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded-md"
                     required={!initialData}
                 />
                 {imagePreview && (
-                    <div className="mt-2">
+                    <motion.div 
+                        className="mt-2"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <Image
                             src={imagePreview}
                             alt="Preview"
@@ -99,20 +112,17 @@ export default function FoodItemForm({ initialData, onSubmit, buttonText = 'Subm
                             className="rounded-lg object-cover"
                             unoptimized
                         />
-                    </div>
+                    </motion.div>
                 )}
             </div>
-            <button
+            <Button
                 type="submit"
                 disabled={uploading}
-                className={`w-full p-2 text-white rounded ${
-                    uploading 
-                        ? 'bg-gray-400' 
-                        : 'bg-yellow-600 hover:bg-yellow-700'
-                }`}
+                className="w-full"
+                variant={uploading ? "outline" : "default"}
             >
                 {uploading ? 'Uploading...' : buttonText}
-            </button>
-        </form>
+            </Button>
+        </motion.form>
     );
 }
