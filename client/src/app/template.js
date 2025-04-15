@@ -2,24 +2,35 @@
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Home, LogOut } from 'lucide-react';
 import SignOut from '@/components/SignOut';
+import { usePathname } from 'next/navigation';
 
 export default function Template({ children }) {
     const { data: session, status } = useSession();
+    const pathname = usePathname();
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && status === 'unauthenticated' && window.location.pathname !== '/login') {
+        setIsMounted(true);
+        if (status === 'unauthenticated' && pathname !== '/login') {
             redirect('/login');
         }
-    }, [status]);
+    }, [status, pathname]);
+
+    // Don't render header until client-side hydration is complete
+    if (!isMounted) {
+        return <>{children}</>;
+    }
+
+    const isLoginPage = pathname === '/login';
 
     return (
         <>
-            {typeof window !== 'undefined' && window.location.pathname !== '/login' && (
+            {!isLoginPage && (
                 <motion.header 
                     className="bg-white/80 backdrop-blur-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50"
                     initial={{ y: -100 }}
@@ -35,13 +46,12 @@ export default function Template({ children }) {
                                     Dashboard
                                 </Link>
                             </Button>
-                            
-                                <SignOut />
+                            <SignOut />
                         </div>
                     </div>
                 </motion.header>
             )}
-            <div className={window.location.pathname !== '/login' ? 'pt-8' : ''}>
+            <div className={!isLoginPage ? 'pt-8' : ''}>
                 {children}
             </div>
         </>
