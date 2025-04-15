@@ -119,9 +119,6 @@ export default function Home() {
           </div>
         )}
       </Card>
-      <Link href="/" className="absolute top-4 right-4 text-sm opacity-80 underline transition-transform transform hover:scale-110 hover:text-yellow-300 bg-black p-2 rounded-lg">
-        Back to Home
-      </Link>
     </div>
   );
 }

@@ -2,39 +2,52 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { SessionProvider } from "next-auth/react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 const AuthButton = () => {
   const { data: session } = useSession();
 
   const handleSignIn = async () => {
-    const newLocal = await signIn("google", { callbackUrl: "/" });
+    await signIn("google", { callbackUrl: "/" });
   };
 
   return (
     <div className="flex flex-col items-center">
       {!session ? (
-        <button
-          onClick={handleSignIn}
-          className="flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out hover:bg-gray-100"
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <Image
-            src="/google.png"
-            alt="Google Logo"
-            width={40}
-            height={40}
-            className="mr-2"
-          />
-          Sign in with Google
-        </button>
+          <Button
+            onClick={handleSignIn}
+            variant="outline"
+            className="flex items-center justify-center gap-2 px-6 py-5 rounded-full"
+          >
+            <Image
+              src="/google.png"
+              alt="Google Logo"
+              width={24}
+              height={24}
+            />
+            Sign in with Google
+          </Button>
+        </motion.div>
       ) : (
         <div className="text-center">
-          <p className="text-white text-xl mb-4">Welcome, {session.user.name}!</p>
-          <button
-            onClick={() => signOut()}
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transition duration-300 ease-in-out"
+          <p className="text-xl mb-4">Welcome, {session.user.name}!</p>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Sign out
-          </button>
+            <Button
+              onClick={() => signOut()}
+              variant="destructive"
+              className="px-6 py-2 rounded-full"
+            >
+              Sign out
+            </Button>
+          </motion.div>
         </div>
       )}
     </div>
