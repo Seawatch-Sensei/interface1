@@ -1,6 +1,12 @@
-# Banana Predictor
+# BananAI
 
-![1739641390777](image/README/1739641390777.png)
+<div align="center">
+  <video width="640" height="360" autoplay loop muted playsinline>
+    <source src="image/README/17.04.2025_11.09.21_REC.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
 
 Repo Structure:
 
@@ -8,7 +14,6 @@ Repo Structure:
 2. `server` is the old backend server we used. ***It is no longer in user, just there for the records.***
 3. `HF` is the model hosted on gradio.
 4. `image` just has the images in the README.
-
 
 A full-stack web application built entirely with Next.js, utilizing Next.js API routes for backend functionality.
 
