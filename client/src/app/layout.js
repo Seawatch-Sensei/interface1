@@ -37,6 +37,10 @@ export default function RootLayout({ children }) {
             {children}
           </Template>
         </SessionProvider>
+        
+        <div className="fixed bottom-2 right-2 text-xs text-white/60 z-50">
+          Video by <a href="https://pixabay.com/users/savagegraphics-21685451/?utm_source=link-attribution&utm_medium=referral&utm_campaign=video&utm_content=209022" className="hover:text-white/80 transition-colors">Sree Nand</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=video&utm_content=209022" className="hover:text-white/80 transition-colors">Pixabay</a>
+        </div>
       </body>
     </html>
   );
