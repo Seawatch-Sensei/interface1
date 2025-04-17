@@ -66,7 +66,10 @@ export async function POST(request) {
 
                 // Use sharp to process the image (conversion, resizing, etc.)
                 const processedImageBuffer = await sharp(Buffer.from(buffer))
-                    .resize(originalWidth, originalHeight)  // Resize to original dimensions
+                    .resize(originalWidth, originalHeight, {
+                        fit: 'fill',  // Force resize to specified dimensions without preserving aspect ratio
+                        withoutEnlargement: false  // Allow image to be enlarged if needed
+                    })
                     .toFormat('png')  // Convert the image to PNG format
                     .toBuffer();  // Return the image as a buffer
 

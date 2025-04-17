@@ -2,6 +2,14 @@
 
 ![1739641390777](image/README/1739641390777.png)
 
+Repo Structure:
+
+1. `client` is the directory of the web application
+2. `server` is the old backend server we used. ***It is no longer in user, just there for the records.***
+3. `HF` is the model hosted on gradio.
+4. `image` just has the images in the README.
+
+
 A full-stack web application built entirely with Next.js, utilizing Next.js API routes for backend functionality.
 
 ## Directory Structure
