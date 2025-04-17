@@ -58,3 +58,9 @@
     font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   }
 }
+
+@layer base {
+  link[rel="icon"] {
+    background-image: url('/logo.svg');
+  }
+}

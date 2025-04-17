@@ -38,7 +38,19 @@ export default function Template({ children }) {
                     transition={{ duration: 0.3 }}
                 >
                     <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-                        <Link href="/" className="font-bold text-xl text-yellow-600">BananAI</Link>
+                        <Link href="/" className="font-bold text-xl text-yellow-600 flex items-center">
+
+                            <video 
+                                autoPlay 
+                                loop 
+                                muted 
+                                playsInline
+                                className="h-8 w-8 mr-2" 
+                            >
+                                <source src="/logo.mp4" type="video/mp4" />
+                            </video>
+                            BananAI
+                        </Link>
                         <div className="flex gap-2">
                             <Button variant="ghost" size="sm" asChild>
                                 <Link href="/">
