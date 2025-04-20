@@ -1,13 +1,15 @@
 # BananAI
 
 <div align="center">
-  <video width="640" height="360" autoplay loop muted playsinline>
-    <source src="image/README/17.04.2025_11.09.21_REC.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+<video src="https://github.com/user-attachments/assets/02f6c4ca-5929-44c0-8df8-65a35f3992b4" width="352" height="720" autoplay></video>
+
 </div>
 
-Repo Structure:
+
+## [Demo](https://interface1-theta.vercel.app/) on Vercel
+
+
+## Repo Structure:
 
 1. `client` is the directory of the web application
 2. `old server` is the old backend server we used. ***It is no longer in user, just there for the records.***
