@@ -1,12 +1,13 @@
 import multer from 'multer';
-import { predict } from '../utilities.js';
+import { predict } from '../../../lib/utilities.js';
 import fs from 'fs';
 import { promisify } from 'util';
 
-// Directly set upload destination to tmp folder
-const upload = multer({ dest: '/tmp/' });  // Use /tmp for serverless environments
+// Configure multer for temporary file storage in serverless environment
+const upload = multer({ dest: '/tmp/' });
 const unlinkAsync = promisify(fs.unlink);
 
+// Disable Next.js body parsing for multipart form handling
 export const config = {
     api: {
         bodyParser: false,
@@ -19,11 +20,12 @@ export async function GET() {
 
 export async function POST(request) {
     return new Promise((resolve) => {
+        // Handle file upload with multer
         upload.single('image')(request, {
             status: (code) => ({
                 json: (data) => resolve(Response.json(data, { status: code })),
                 send: (data) => resolve(new Response(data, { status: code })),
-                setHeader: () => {}, // No-op, Next.js handles headers internally
+                setHeader: () => {},
             }),
             json: async () => request.formData(),
         }, async (err) => {
@@ -32,6 +34,7 @@ export async function POST(request) {
             }
 
             try {
+                // Extract and validate uploaded file
                 const formData = await request.formData();
                 const file = formData.get('image');
 
@@ -39,20 +42,16 @@ export async function POST(request) {
                     return resolve(Response.json({ error: "No file uploaded" }, { status: 400 }));
                 }
 
-                const filePath = `/tmp/${file.name}`;  // Directly store the file in /tmp
+                // Save file to temporary storage
+                const filePath = `/tmp/${file.name}`;
                 const fileBuffer = Buffer.from(await file.arrayBuffer());
-
-                // Write the file directly to the /tmp folder without creating a folder structure
                 await fs.promises.writeFile(filePath, fileBuffer);
 
-                console.log("Processing the image...");
+                // Process image through classification model
+                const result = await predict(filePath);
 
-                // Process the image using predict
-                const result = await predict(filePath); // Get the prediction result
-
-                await unlinkAsync(filePath); // Cleanup uploaded file
-
-                console.log("Image processed successfully.");
+                // Cleanup and return results
+                await unlinkAsync(filePath);
                 resolve(Response.json({ classification: result }, { status: 200 }));
             } catch (error) {
                 console.error("Error processing image:", error);

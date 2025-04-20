@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { uploadImage } from '@/utils/imageUpload';
+import { uploadImage } from '@/lib/imageUpload';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";

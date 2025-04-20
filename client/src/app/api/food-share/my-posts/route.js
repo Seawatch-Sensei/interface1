@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import connectDB from '../../../lib/mongodb';
-import { FoodShareItem } from '../../db';
+import connectDB from '../../../../lib/mongodb';
+import { FoodShareItem } from '../../../../lib/dbmodels';
 
 export async function GET(request) {
     await connectDB();

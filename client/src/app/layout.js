@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react';
 import Template from "./template";
+import { usePathname } from 'next/navigation';
+import AppHeader from "@/components/ui/header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,6 +18,9 @@ const geistMono = localFont({
 });
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const isLoginPage = pathname === '/login';
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}>
@@ -33,6 +38,9 @@ export default function RootLayout({ children }) {
         </div>
         
         <SessionProvider session={children.session}>
+          {!isLoginPage && (
+            <AppHeader />
+          )}
           <Template className="relative z-10">
             {children}
           </Template>

@@ -5,13 +5,14 @@
 
 </div>
 
+
 ## [Demo](https://interface1-theta.vercel.app/) on Vercel
 
 
 ## Repo Structure:
 
 1. `client` is the directory of the web application
-2. `server` is the old backend server we used. ***It is no longer in user, just there for the records.***
+2. `old server` is the old backend server we used. ***It is no longer in user, just there for the records.***
 3. `HF` is the model hosted on gradio.
 4. `image` just has the images in the README.
 
@@ -53,6 +54,8 @@ Ensure you have the following installed:
 
    The application should now be running at `http://localhost:3000`.
 
+
 ## Notes
 
 - The `server` directory is no longer used, as we have migrated backend functionality to Next.js API routes.
+- Note that you need a `.env` file with a structure similar to the one in `client\env.example`

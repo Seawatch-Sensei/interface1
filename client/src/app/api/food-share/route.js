@@ -1,10 +1,10 @@
-import { FoodShareItem } from '../db';
+import { FoodShareItem } from '../../../lib/dbmodels';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import multer from 'multer';
 import fs from 'fs';
 import { promisify } from 'util';
-import connectDB from '../../lib/mongodb';
+import connectDB from '../../../lib/mongodb';
 
 const upload = multer({ dest: '/tmp/' });
 const unlinkAsync = promisify(fs.unlink);

@@ -1,14 +1,16 @@
 import multer from 'multer';
-import { lstmApi } from '../utilities.js';
+import { HFApi } from '../../../lib/utilities.js';
 import fs from 'fs';
 import { promisify } from 'util';
-import fetch from 'node-fetch'; // To fetch the image from the URL
-import sharp from 'sharp'; // For handling webp and other formats
+import fetch from 'node-fetch';
+import sharp from 'sharp';
 
-// Directly set upload destination to tmp folder
-const upload = multer({ dest: '/tmp/' });  // Use /tmp for serverless environments
+// Configure multer to use temporary directory for file uploads
+// Important: /tmp is used for serverless environments like Vercel
+const upload = multer({ dest: '/tmp/' });
 const unlinkAsync = promisify(fs.unlink);
 
+// Disable Next.js body parsing as we're handling multipart form data
 export const config = {
     api: {
         bodyParser: false,
@@ -21,11 +23,12 @@ export async function GET() {
 
 export async function POST(request) {
     return new Promise((resolve) => {
+        // Handle multipart form data upload using multer middleware
         upload.single('image')(request, {
             status: (code) => ({
                 json: (data) => resolve(Response.json(data, { status: code })),
                 send: (data) => resolve(new Response(data, { status: code })),
-                setHeader: () => {}, // No-op, Next.js handles headers internally
+                setHeader: () => {},
             }),
             json: async () => request.formData(),
         }, async (err) => {
@@ -34,6 +37,7 @@ export async function POST(request) {
             }
 
             try {
+                // Extract image and temperature from form data
                 const formData = await request.formData();
                 const file = formData.get('image');
                 const temperature = parseFloat(formData.get('temperature')) || 25;
@@ -42,40 +46,35 @@ export async function POST(request) {
                     return resolve(Response.json({ error: "No file uploaded" }, { status: 400 }));
                 }
 
-                const filePath = `/tmp/${file.name}`;  // Directly store the file in /tmp
+                // Save uploaded file to temporary storage
+                const filePath = `/tmp/${file.name}`;
                 const fileBuffer = Buffer.from(await file.arrayBuffer());
-
-                // Write the file directly to the /tmp folder without creating a folder structure
                 await fs.promises.writeFile(filePath, fileBuffer);
 
-                console.log("Temperature:", temperature);
-
-                // Extract the original image dimensions using sharp
+                // Preserve original image dimensions for consistent output
                 const originalImage = await sharp(filePath).metadata();
-                const originalWidth = originalImage.width;
-                const originalHeight = originalImage.height;
+                const { width: originalWidth, height: originalHeight } = originalImage;
 
-                console.log("Processing the image...");
-                
-                // Process the image using lstmApi
-                const imageUrl = await lstmApi(filePath, temperature); // Get the image URL from lstmApi
-                
-                // Fetch the image from the URL
+                // Process image through Hugging Face API and get result URL
+                const imageUrl = await HFApi(filePath, temperature);
                 const response = await fetch(imageUrl);
                 const buffer = await response.arrayBuffer();
 
-                // Use sharp to process the image (conversion, resizing, etc.)
+                // Post-process the AI-generated image:
+                // - Resize to match original dimensions
+                // - Convert to PNG format for consistency
                 const processedImageBuffer = await sharp(Buffer.from(buffer))
                     .resize(originalWidth, originalHeight, {
-                        fit: 'fill',  // Force resize to specified dimensions without preserving aspect ratio
-                        withoutEnlargement: false  // Allow image to be enlarged if needed
+                        fit: 'fill',
+                        withoutEnlargement: false
                     })
-                    .toFormat('png')  // Convert the image to PNG format
-                    .toBuffer();  // Return the image as a buffer
+                    .toFormat('png')
+                    .toBuffer();
 
-                await unlinkAsync(filePath); // Cleanup uploaded file
+                // Cleanup temporary file
+                await unlinkAsync(filePath);
 
-                console.log("Image processed successfully.");
+                // Return processed image as PNG
                 resolve(new Response(processedImageBuffer, {
                     status: 200,
                     headers: { 'Content-Type': 'image/png' }
