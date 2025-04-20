@@ -8,7 +8,7 @@ async function predict(path) {
     return result.data[0];
 }
 
-async function lstmApi(path, temperature) {
+async function HFApi(path, temperature) {
     const client = await Client.connect("AlaaAbbas/banana1");
     const result = await client.predict("/predict",{
         image: handle_file(path),
@@ -18,4 +18,4 @@ async function lstmApi(path, temperature) {
     return result.data[0].url;
 }
 
-export { predict, lstmApi };
+export { predict, HFApi };

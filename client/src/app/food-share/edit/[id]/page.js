@@ -7,19 +7,34 @@ import FoodItemForm from '@/components/food-share/FoodItemForm';
 export default function EditFoodItem({ params }) {
     const router = useRouter();
     const [initialData, setInitialData] = useState(null);
+    const { data: session, status } = useSession();
+    const [id, setId] = useState(null);
 
     useEffect(() => {
         document.title = 'BananAI - Edit Food Item';
-    }, []);
+        if (status === 'unauthenticated') {
+            router.push('/login');
+        }
+    }, [status, router]);
 
     useEffect(() => {
-        if (params.id) {
+        const initParams = async () => {
+            if (params) {
+                const { id: paramId } = await params;
+                setId(paramId);
+            }
+        };
+        initParams();
+    }, [params]);
+
+    useEffect(() => {
+        if (id && status === 'authenticated') {
             fetchItem();
         }
-    }, [params.id]);
+    }, [id, status]);
 
     const fetchItem = async () => {
-        const response = await fetch(`/api/food-share/${params.id}`);
+        const response = await fetch(`/api/food-share/${id}`);
         const data = await response.json();
         setInitialData(data);
     };

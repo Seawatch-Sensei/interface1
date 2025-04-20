@@ -7,15 +7,20 @@ import FoodItemForm from '@/components/food-share/FoodItemForm';
 export default function NewFoodShare() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const { data: session, status } = useSession();
 
     useEffect(() => {
         document.title = 'BananAI - Share New Food';
-    }, []);
+        if (status === 'unauthenticated') {
+            router.push('/login');
+        }
+    }, [status, router]);
 
-    const { data: session } = useSession();
+    if (status === 'loading') {
+        return <div>Loading...</div>;
+    }
 
     if (!session) {
-        router.push('/login');
         return null;
     }
 
